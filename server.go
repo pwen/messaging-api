@@ -46,6 +46,8 @@ func (s *Server) unregisterClient(c *Client) {
 }
 
 func (s *Server) broadcastToClients(msg Message) {
+	go save(&msg)
+
 	for client := range s.clients {
 		client.buffer <- msg
 	}
