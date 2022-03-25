@@ -6,7 +6,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 RUN go mod tidy
 
-COPY . .
+COPY *.go .
 RUN go build -o /go-msg-svr
 
 EXPOSE 8080
