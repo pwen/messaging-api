@@ -19,7 +19,6 @@ type Message struct {
 
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	return
 }
 
 func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
@@ -41,7 +40,7 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
-		panic("addr must be set for web server")
+		panic("port must be set for web server")
 	}
 	wsServer := NewServer()
 	go wsServer.run()
@@ -53,6 +52,6 @@ func main() {
 	})
 	mux.HandleFunc("/messages", GetMessagesHandler)
 
-	log.Printf("server listetening at localhost:%s...", port)
+	log.Printf("server listening at localhost:%s...", port)
 	log.Fatal(http.ListenAndServe(port, mux))
 }

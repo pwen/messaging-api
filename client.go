@@ -20,8 +20,8 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-// Client represents an intermediary between a websocket
-// connection and the server
+// Client represents an intermediary between a websocket connection
+// and the server
 type Client struct {
 	conn   *websocket.Conn
 	server *Server
@@ -51,8 +51,8 @@ func ServeWs(s *Server, w http.ResponseWriter, r *http.Request) {
 	go client.read()
 }
 
-// read transfers inbound messages from the websocket
-// connection to the server
+// read transfers inbound messages from the websocket connection
+// to the server
 func (c *Client) read() {
 	defer c.conn.Close()
 
@@ -67,8 +67,8 @@ func (c *Client) read() {
 
 }
 
-// write transfers messages from buffer channel to
-// websocket connection
+// write transfers messages from buffer channel to websocket
+// connection
 func (c *Client) write() {
 	defer c.conn.Close()
 

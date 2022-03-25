@@ -26,7 +26,7 @@ func (s *Server) run() {
 	for {
 		select {
 		case client := <-s.join:
-			s.registerClient((client))
+			s.registerClient(client)
 		case client := <-s.leave:
 			s.unregisterClient(client)
 		case msg := <-s.forward:
