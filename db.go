@@ -2,8 +2,10 @@ package main
 
 import (
 	"log"
+	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -16,6 +18,15 @@ const (
 )
 
 func init() {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Print("error loading .env file")
+	}
+
+	mgoURI := os.Getenv("MGO_URI")
+	if len(mgoURI) == 0 {
+		panic("MongoDB URI must be set")
+	}
+
 	session, err := mgo.Dial("mongodb://localhost/chat")
 	if err != nil {
 		panic(err)

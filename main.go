@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 )
@@ -38,6 +39,10 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if len(port) == 0 {
+		panic("addr must be set for web server")
+	}
 	wsServer := NewServer()
 	go wsServer.run()
 
@@ -48,6 +53,6 @@ func main() {
 	})
 	mux.HandleFunc("/messages", GetMessagesHandler)
 
-	log.Printf("server listetening at localhost:8080...")
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	log.Printf("server listetening at localhost:%s...", port)
+	log.Fatal(http.ListenAndServe(port, mux))
 }
