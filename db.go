@@ -27,7 +27,7 @@ func init() {
 		panic("MongoDB URI must be set")
 	}
 
-	session, err := mgo.Dial("mongodb://localhost/chat")
+	session, err := mgo.Dial(mgoURI)
 	if err != nil {
 		panic(err)
 	}
@@ -76,7 +76,6 @@ func find(from string, to string, limit int64) ([]Message, error) {
 	})
 
 	messages := make([]Message, limit)
-	log.Print("query: ", findQuery)
 	err := coll.Pipe(findQuery).All(&messages)
 
 	if err != nil {
