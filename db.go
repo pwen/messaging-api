@@ -11,6 +11,7 @@ import (
 var Mgo *mgo.Session
 
 const (
+	DEFAULT_LIMIT            = 100
 	COLLECTION_NAME_MESSAGES = "messages"
 )
 
@@ -36,7 +37,7 @@ func find(from string, to string, limit int64) ([]Message, error) {
 	coll := Mgo.DB("").C(COLLECTION_NAME_MESSAGES)
 
 	if limit == 0 {
-		limit = 100
+		limit = DEFAULT_LIMIT
 	}
 
 	if to != "" {
@@ -46,6 +47,9 @@ func find(from string, to string, limit int64) ([]Message, error) {
 	if from != "" {
 		query = append(query, bson.M{"from": from})
 	}
+
+	// By default, only messages from the last 30 days should be returned.
+	query = append(query, bson.M{"timestamp": bson.M{"$gt": time.Now().AddDate(0, 0, -30)}})
 
 	findQuery = append(findQuery, bson.M{"$match": func() bson.M {
 		if query != nil && len(query) > 0 {
